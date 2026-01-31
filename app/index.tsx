@@ -1,10 +1,10 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
-function index() {
+function Index() {
   return (
     <View style={styles.container}>
-      <Text>index</Text>
+      <Text>Index</Text>
     </View>
   )
 }
@@ -17,4 +17,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default index
+export default Index
