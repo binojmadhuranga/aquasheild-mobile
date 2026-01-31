@@ -1,9 +1,20 @@
 import React from 'react'
+import { View, Text, StyleSheet } from 'react-native'
 
-function index() {
+function Index() {
   return (
-    <div>index</div>
+    <View style={styles.container}>
+      <Text>Index</Text>
+    </View>
   )
 }
 
-export default index
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+})
+
+export default Index
