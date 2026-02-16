@@ -1,8 +1,8 @@
-# 🌤️ SkySense Mobile App
+# 🌤️ AquaSheild Mobile App
 
-SkySense is a smart IoT-based mobile application designed to monitor and control an intelligent, weather-adaptive cloth drying rack system. The app allows users to view real-time rack status and weather conditions, as well as manually control the folding and unfolding of the rack from anywhere.
+AquaSheild is a smart IoT-based mobile application designed to monitor and control an intelligent, weather-adaptive cloth drying rack system. The app allows users to view real-time rack status and weather conditions, as well as manually control the folding and unfolding of the rack from anywhere.
 
-This application acts as the user-facing control layer of the **SkySense Smart Cloth Rack System**, combining automation with manual override for maximum convenience, safety, and flexibility.
+This application acts as the user-facing control layer of the **AquaSheild Smart Cloth Rack System**, combining automation with manual override for maximum convenience, safety, and flexibility.
 
 ---
 
