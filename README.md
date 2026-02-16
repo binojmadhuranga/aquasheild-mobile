@@ -36,5 +36,5 @@ This application acts as the user-facing control layer of the **AquaSheild Smart
 
 ## 🧠 System Overview
 
-The SkySense mobile app communicates with an IoT controller (ESP32/ESP8266) via cloud services using Wi-Fi and MQTT/REST APIs. Sensor data is processed in real time to provide accurate status updates and enable remote control.
+The AquaSheild mobile app communicates with an IoT controller (ESP32/ESP8266) via cloud services using Wi-Fi and MQTT/REST APIs. Sensor data is processed in real time to provide accurate status updates and enable remote control.
 
