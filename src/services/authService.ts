@@ -1,65 +1,44 @@
-import axiosInstance from './axiosConfig';
+import api from './axiosConfig';
 
-export interface RegisterRequest {
+export interface RegisterData {
   name: string;
   email: string;
   password: string;
 }
 
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-}
-
-export interface RegisterResponse {
-  message: string;
-  user: User;
-}
-
-export interface LoginRequest {
+export interface LoginData {
   email: string;
   password: string;
 }
 
-export interface LoginResponse {
-  message: string;
-  token: string;
-  user: User;
+export interface AuthResponse {
+  token?: string;
+  user?: {
+    id: string;
+    name: string;
+    email: string;
+  };
+  message?: string;
 }
 
-class AuthService {
+export const authService = {
   // Register a new user
-  async register(data: RegisterRequest): Promise<RegisterResponse> {
+  register: async (data: RegisterData): Promise<AuthResponse> => {
     try {
-      const response = await axiosInstance.post<RegisterResponse>(
-        '/auth/register',
-        data
-      );
+      const response = await api.post('/auth/register', data);
       return response.data;
     } catch (error: any) {
-      if (error.response?.data?.message) {
-        throw new Error(error.response.data.message);
-      }
-      throw new Error('Registration failed. Please try again.');
+      throw error.response?.data || { message: 'Registration failed' };
     }
-  }
+  },
 
   // Login user
-  async login(data: LoginRequest): Promise<LoginResponse> {
+  login: async (data: LoginData): Promise<AuthResponse> => {
     try {
-      const response = await axiosInstance.post<LoginResponse>(
-        '/auth/login',
-        data
-      );
+      const response = await api.post('/auth/login', data);
       return response.data;
     } catch (error: any) {
-      if (error.response?.data?.message) {
-        throw new Error(error.response.data.message);
-      }
-      throw new Error('Login failed. Please try again.');
+      throw error.response?.data || { message: 'Login failed' };
     }
-  }
-}
-
-export default new AuthService();
+  },
+};

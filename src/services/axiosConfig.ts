@@ -1,21 +1,19 @@
 import axios from 'axios';
 
-const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5000/api',
+const BASE_URL = 'http://localhost:5000/api';
+
+const api = axios.create({
+  baseURL: BASE_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Request interceptor
-axiosInstance.interceptors.request.use(
+// Request interceptor for adding auth token
+api.interceptors.request.use(
   (config) => {
-    // You can add authorization token here if needed
-    // const token = await AsyncStorage.getItem('token');
-    // if (token) {
-    //   config.headers.Authorization = `Bearer ${token}`;
-    // }
+    // You can add auth token here if needed
     return config;
   },
   (error) => {
@@ -23,25 +21,21 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// Response interceptor
-axiosInstance.interceptors.response.use(
+// Response interceptor for handling errors
+api.interceptors.response.use(
   (response) => {
     return response;
   },
   (error) => {
-    // Handle errors globally
     if (error.response) {
-      // Server responded with error status
-      console.error('Response error:', error.response.data);
+      console.error('API Error:', error.response.data);
     } else if (error.request) {
-      // Request was made but no response
-      console.error('Request error:', error.request);
+      console.error('Network Error:', error.request);
     } else {
-      // Something else happened
       console.error('Error:', error.message);
     }
     return Promise.reject(error);
   }
 );
 
-export default axiosInstance;
+export default api;
