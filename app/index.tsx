@@ -10,6 +10,7 @@ export default function Index() {
   const initialize = useAuthStore((state: any) => state.initialize);
   const router = useRouter();
   const [isCheckingOnboarding, setIsCheckingOnboarding] = useState(true);
+  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
 
   useEffect(() => {
     const initializeApp = async () => {
@@ -17,13 +18,9 @@ export default function Index() {
       await initialize();
       
       // Check onboarding status
-      const hasCompletedOnboarding = await storageService.getOnboardingStatus();
+      const onboardingComplete = await storageService.getOnboardingStatus();
+      setHasCompletedOnboarding(onboardingComplete);
       setIsCheckingOnboarding(false);
-      
-      // Route based on auth and onboarding status
-      if (!hasCompletedOnboarding) {
-        router.replace('/onboarding');
-      }
     };
 
     initializeApp();
@@ -31,24 +28,24 @@ export default function Index() {
 
   useEffect(() => {
     if (isInitialized && !isCheckingOnboarding) {
+      // First check: Has user completed onboarding?
+      if (!hasCompletedOnboarding) {
+        router.replace('/onboarding');
+        return;
+      }
+
+      // Second check: Is user authenticated?
       if (user) {
         // User is authenticated, navigate to home
         router.replace('/(tabs)/home');
+      } else {
+        // User is not authenticated, navigate to login
+        router.replace('/(auth)/login');
       }
-      // If not authenticated and onboarding is complete, 
-      // user will be on login screen already from onboarding
     }
-  }, [user, isInitialized, isCheckingOnboarding]);
+  }, [user, isInitialized, isCheckingOnboarding, hasCompletedOnboarding]);
 
   // Show loading while initializing
-  if (!isInitialized || isCheckingOnboarding) {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color="#ffffff" />
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
       <ActivityIndicator size="large" color="#ffffff" />
