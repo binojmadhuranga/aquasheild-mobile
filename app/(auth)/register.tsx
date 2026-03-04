@@ -32,7 +32,7 @@ export default function RegisterScreen() {
 
     try {
       await register({ name, email, password });
-      router.replace('/');
+      router.replace('/(tabs)/home');
     } catch (error: any) {
       Alert.alert('Registration Failed', error.message || 'Unable to create account');
     }

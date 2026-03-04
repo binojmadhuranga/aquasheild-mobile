@@ -1,27 +1,47 @@
-import { useEffect } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuthStore } from '../src/store/authStore';
+import { storageService } from '../src/utils/storage';
 
 export default function Index() {
   const user = useAuthStore((state: any) => state.user);
   const isInitialized = useAuthStore((state: any) => state.isInitialized);
   const initialize = useAuthStore((state: any) => state.initialize);
   const router = useRouter();
+  const [isCheckingOnboarding, setIsCheckingOnboarding] = useState(true);
 
   useEffect(() => {
-    initialize();
+    const initializeApp = async () => {
+      // Initialize auth first
+      await initialize();
+      
+      // Check onboarding status
+      const hasCompletedOnboarding = await storageService.getOnboardingStatus();
+      setIsCheckingOnboarding(false);
+      
+      // Route based on auth and onboarding status
+      if (!hasCompletedOnboarding) {
+        router.replace('/onboarding');
+      }
+    };
+
+    initializeApp();
   }, []);
 
   useEffect(() => {
-    if (isInitialized) {
-      if (!user) {
-        router.replace('/(auth)/login');
+    if (isInitialized && !isCheckingOnboarding) {
+      if (user) {
+        // User is authenticated, navigate to home
+        router.replace('/(tabs)/home');
       }
+      // If not authenticated and onboarding is complete, 
+      // user will be on login screen already from onboarding
     }
-  }, [user, isInitialized]);
+  }, [user, isInitialized, isCheckingOnboarding]);
 
-  if (!isInitialized) {
+  // Show loading while initializing
+  if (!isInitialized || isCheckingOnboarding) {
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" color="#ffffff" />
@@ -31,14 +51,7 @@ export default function Index() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>
-        Welcome to AquaShield Dry!
-      </Text>
-      {user && (
-        <Text style={styles.userText}>
-          Hello, {user.name}!
-        </Text>
-      )}
+      <ActivityIndicator size="large" color="#ffffff" />
     </View>
   );
 }
@@ -49,15 +62,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#0A0E27',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  welcomeText: {
-    color: '#FFFFFF',
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  userText: {
-    color: '#9CA3AF',
-    fontSize: 18,
   },
 });

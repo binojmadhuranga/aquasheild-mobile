@@ -62,23 +62,6 @@ export default function Home() {
 
           {/* Add more cards or content here */}
         </ScrollView>
-
-        {/* Bottom Navigation */}
-        <View style={styles.bottomNav}>
-          <TouchableOpacity style={styles.navItem}>
-            <View style={styles.activeNavIcon}>
-              <Ionicons name="home" size={24} color="#fff" />
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.navItem}>
-            <Ionicons name="grid-outline" size={24} color="#8b85a8" />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.navItem}>
-            <Ionicons name="ellipsis-vertical" size={24} color="#8b85a8" />
-          </TouchableOpacity>
-        </View>
       </LinearGradient>
     </View>
   );
@@ -187,30 +170,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#fff',
-  },
-  bottomNav: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 80,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    backgroundColor: 'rgba(15, 23, 42, 0.95)',
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(139, 133, 168, 0.2)',
-    paddingBottom: 10,
-  },
-  navItem: {
-    padding: 10,
-  },
-  activeNavIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: 'rgba(99, 102, 241, 0.5)',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
