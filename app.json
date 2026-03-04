@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "skysense",
-    "slug": "skysense",
+    "name": "AquaSheild",
+    "slug": "AquaSheild",
     "version": "1.0.0",
     "icon": "./assets/AquaSheild_logo.png",
     "userInterfaceStyle": "light",
