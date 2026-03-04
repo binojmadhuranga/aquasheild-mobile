@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  StyleSheet,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
@@ -42,37 +43,35 @@ export default function LoginScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      className="flex-1"
+      style={styles.container}
     >
       <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        className="bg-[#0A0E27]"
+        contentContainerStyle={styles.scrollContent}
+        style={styles.scrollView}
         keyboardShouldPersistTaps="handled"
       >
-        <View className="flex-1 px-6 pt-16">
+        <View style={styles.content}>
           {/* Header */}
-          <View className="items-center mb-4">
-            <Text className="text-white text-lg">Drying...</Text>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Ready to Dry...</Text>
           </View>
 
           {/* Title Section */}
-          <View className="mb-10">
-            <Text className="text-white text-3xl font-bold text-center mb-2">
-              Hello Again
-            </Text>
-            <Text className="text-gray-400 text-sm text-center">
+          <View style={styles.titleSection}>
+            <Text style={styles.title}>Hello Again</Text>
+            <Text style={styles.subtitle}>
               Access your AquaShield Dry account.
             </Text>
           </View>
 
           {/* Form Section */}
-          <View className="mb-6">
+          <View style={styles.formSection}>
             {/* Username Field */}
-            <View className="mb-4">
-              <Text className="text-white text-sm mb-2">UserName</Text>
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>UserName</Text>
               <TextInput
-                className="bg-[#1A1F3A] text-white px-4 py-4 rounded-xl"
-                placeholder="dinalkavidu5@gmail.com"
+                style={styles.input}
+                placeholder="Enter your email address "
                 placeholderTextColor="#6B7280"
                 value={email}
                 onChangeText={setEmail}
@@ -82,11 +81,11 @@ export default function LoginScreen() {
             </View>
 
             {/* Password Field */}
-            <View className="mb-6">
-              <Text className="text-white text-sm mb-2">Password</Text>
-              <View className="flex-row items-center bg-[#1A1F3A] rounded-xl px-4">
+            <View style={styles.passwordGroup}>
+              <Text style={styles.label}>Password</Text>
+              <View style={styles.passwordContainer}>
                 <TextInput
-                  className="flex-1 text-white py-4"
+                  style={styles.passwordInput}
                   placeholder="••••••••"
                   placeholderTextColor="#6B7280"
                   value={password}
@@ -105,25 +104,25 @@ export default function LoginScreen() {
           </View>
 
           {/* Register Link */}
-          <View className="flex-row justify-center mb-8">
-            <Text className="text-gray-400 text-sm">
+          <View style={styles.registerLink}>
+            <Text style={styles.registerText}>
               You have not already account?{' '}
             </Text>
             <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
-              <Text className="text-cyan-400 text-sm font-semibold">Register</Text>
+              <Text style={styles.registerButton}>Register</Text>
             </TouchableOpacity>
           </View>
 
           {/* Login Button */}
           <TouchableOpacity
-            className="bg-white rounded-full py-4 items-center mb-8"
+            style={styles.loginButton}
             onPress={handleLogin}
             disabled={loading}
           >
             {loading ? (
               <ActivityIndicator color="#0A0E27" />
             ) : (
-              <Text className="text-[#0A0E27] text-lg font-bold">Login</Text>
+              <Text style={styles.loginButtonText}>Login</Text>
             )}
           </TouchableOpacity>
         </View>
@@ -131,3 +130,104 @@ export default function LoginScreen() {
     </KeyboardAvoidingView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  scrollView: {
+    backgroundColor: '#0A0E27',
+  },
+  scrollContent: {
+    flexGrow: 1,
+  },
+  content: {
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingTop: 64,
+  },
+  header: {
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  headerText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+  },
+  titleSection: {
+    marginBottom: 40,
+  },
+  title: {
+    color: '#FFFFFF',
+    fontSize: 30,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  subtitle: {
+    color: '#9CA3AF',
+    fontSize: 14,
+    textAlign: 'center',
+  },
+  formSection: {
+    marginBottom: 24,
+  },
+  inputGroup: {
+    marginBottom: 16,
+  },
+  passwordGroup: {
+    marginBottom: 24,
+  },
+  label: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    marginBottom: 8,
+  },
+  input: {
+    backgroundColor: '#1A1F3A',
+    color: '#FFFFFF',
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    borderRadius: 12,
+    fontSize: 16,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1A1F3A',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+  },
+  passwordInput: {
+    flex: 1,
+    color: '#FFFFFF',
+    paddingVertical: 16,
+    fontSize: 16,
+  },
+  registerLink: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 32,
+  },
+  registerText: {
+    color: '#9CA3AF',
+    fontSize: 14,
+  },
+  registerButton: {
+    color: '#22D3EE',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  loginButton: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 25,
+    paddingVertical: 16,
+    alignItems: 'center',
+    marginBottom: 32,
+  },
+  loginButtonText: {
+    color: '#0A0E27',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+});

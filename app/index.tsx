@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../src/context/AuthContext';
 
@@ -21,22 +21,41 @@ export default function Index() {
 
   if (isLoading) {
     return (
-      <View className="flex-1 bg-[#0A0E27] items-center justify-center">
+      <View style={styles.container}>
         <ActivityIndicator size="large" color="#ffffff" />
       </View>
     );
   }
 
   return (
-    <View className="flex-1 bg-[#0A0E27] items-center justify-center">
-      <Text className="text-white text-2xl font-bold mb-4">
+    <View style={styles.container}>
+      <Text style={styles.welcomeText}>
         Welcome to AquaShield Dry!
       </Text>
       {user && (
-        <Text className="text-gray-400 text-lg">
+        <Text style={styles.userText}>
           Hello, {user.name}!
         </Text>
       )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#0A0E27',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  welcomeText: {
+    color: '#FFFFFF',
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
+  userText: {
+    color: '#9CA3AF',
+    fontSize: 18,
+  },
+});
