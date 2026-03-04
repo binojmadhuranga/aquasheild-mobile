@@ -12,7 +12,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useAuth } from '../../src/context/AuthContext';
+import { useAuthStore } from '../../src/store/authStore';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function RegisterScreen() {
@@ -20,8 +20,8 @@ export default function RegisterScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const { register } = useAuth();
+  const register = useAuthStore((state: any) => state.register);
+  const isLoading = useAuthStore((state: any) => state.isLoading);
   const router = useRouter();
 
   const handleRegister = async () => {
@@ -30,14 +30,11 @@ export default function RegisterScreen() {
       return;
     }
 
-    setLoading(true);
     try {
       await register({ name, email, password });
       router.replace('/');
     } catch (error: any) {
       Alert.alert('Registration Failed', error.message || 'Unable to create account');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -128,9 +125,9 @@ export default function RegisterScreen() {
           <TouchableOpacity
             style={styles.signUpButton}
             onPress={handleRegister}
-            disabled={loading}
+            disabled={isLoading}
           >
-            {loading ? (
+            {isLoading ? (
               <ActivityIndicator color="#0A0E27" />
             ) : (
               <Text style={styles.signUpButtonText}>Sign up</Text>

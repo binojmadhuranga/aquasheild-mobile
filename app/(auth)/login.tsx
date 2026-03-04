@@ -12,15 +12,15 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useAuth } from '../../src/context/AuthContext';
+import { useAuthStore } from '../../src/store/authStore';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const login = useAuthStore((state: any) => state.login);
+  const isLoading = useAuthStore((state: any) => state.isLoading);
   const router = useRouter();
 
   const handleLogin = async () => {
@@ -29,14 +29,11 @@ export default function LoginScreen() {
       return;
     }
 
-    setLoading(true);
     try {
       await login({ email, password });
       router.replace('/');
     } catch (error: any) {
       Alert.alert('Login Failed', error.message || 'Invalid credentials');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -117,9 +114,9 @@ export default function LoginScreen() {
           <TouchableOpacity
             style={styles.loginButton}
             onPress={handleLogin}
-            disabled={loading}
+            disabled={isLoading}
           >
-            {loading ? (
+            {isLoading ? (
               <ActivityIndicator color="#0A0E27" />
             ) : (
               <Text style={styles.loginButtonText}>Login</Text>

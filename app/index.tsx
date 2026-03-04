@@ -1,25 +1,27 @@
 import { useEffect } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useAuth } from '../src/context/AuthContext';
+import { useAuthStore } from '../src/store/authStore';
 
 export default function Index() {
-  const { user, isLoading } = useAuth();
+  const user = useAuthStore((state: any) => state.user);
+  const isInitialized = useAuthStore((state: any) => state.isInitialized);
+  const initialize = useAuthStore((state: any) => state.initialize);
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading) {
-      if (user) {
-        // User is authenticated, stay on home or navigate to main app
-        // For now, we'll just show a welcome message
-      } else {
-        // User is not authenticated, redirect to login
+    initialize();
+  }, []);
+
+  useEffect(() => {
+    if (isInitialized) {
+      if (!user) {
         router.replace('/(auth)/login');
       }
     }
-  }, [user, isLoading]);
+  }, [user, isInitialized]);
 
-  if (isLoading) {
+  if (!isInitialized) {
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" color="#ffffff" />
