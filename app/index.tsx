@@ -1,42 +1,54 @@
-import { useEffect } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { useEffect, useState } from 'react';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useAuth } from '../src/context/AuthContext';
+import { useAuthStore } from '../src/store/authStore';
+import { storageService } from '../src/utils/storage';
 
 export default function Index() {
-  const { user, isLoading } = useAuth();
+  const user = useAuthStore((state: any) => state.user);
+  const isInitialized = useAuthStore((state: any) => state.isInitialized);
+  const initialize = useAuthStore((state: any) => state.initialize);
   const router = useRouter();
+  const [isCheckingOnboarding, setIsCheckingOnboarding] = useState(true);
+  const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
 
   useEffect(() => {
-    if (!isLoading) {
+    const initializeApp = async () => {
+      // Initialize auth first
+      await initialize();
+      
+      // Check onboarding status
+      const onboardingComplete = await storageService.getOnboardingStatus();
+      setHasCompletedOnboarding(onboardingComplete);
+      setIsCheckingOnboarding(false);
+    };
+
+    initializeApp();
+  }, []);
+
+  useEffect(() => {
+    if (isInitialized && !isCheckingOnboarding) {
+      // First check: Has user completed onboarding?
+      if (!hasCompletedOnboarding) {
+        router.replace('/onboarding');
+        return;
+      }
+
+      // Second check: Is user authenticated?
       if (user) {
-        // User is authenticated, stay on home or navigate to main app
-        // For now, we'll just show a welcome message
+        // User is authenticated, navigate to home
+        router.replace('/(tabs)/home');
       } else {
-        // User is not authenticated, redirect to login
+        // User is not authenticated, navigate to login
         router.replace('/(auth)/login');
       }
     }
-  }, [user, isLoading]);
+  }, [user, isInitialized, isCheckingOnboarding, hasCompletedOnboarding]);
 
-  if (isLoading) {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color="#ffffff" />
-      </View>
-    );
-  }
-
+  // Show loading while initializing
   return (
     <View style={styles.container}>
-      <Text style={styles.welcomeText}>
-        Welcome to AquaShield Dry!
-      </Text>
-      {user && (
-        <Text style={styles.userText}>
-          Hello, {user.name}!
-        </Text>
-      )}
+      <ActivityIndicator size="large" color="#ffffff" />
     </View>
   );
 }
@@ -47,15 +59,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#0A0E27',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  welcomeText: {
-    color: '#FFFFFF',
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
-  },
-  userText: {
-    color: '#9CA3AF',
-    fontSize: 18,
   },
 });

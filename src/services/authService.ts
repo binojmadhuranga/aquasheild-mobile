@@ -28,7 +28,18 @@ export const authService = {
       const response = await api.post('/auth/register', data);
       return response.data;
     } catch (error: any) {
-      throw error.response?.data || { message: 'Registration failed' };
+      // Handle different error scenarios
+      if (error.response) {
+        // Server responded with error
+        const message = error.response.data?.message || 'Registration failed';
+        throw new Error(message);
+      } else if (error.request) {
+        // No response from server
+        throw new Error('Cannot connect to server. Please check if the backend is running.');
+      } else {
+        // Other errors
+        throw new Error(error.message || 'Registration failed');
+      }
     }
   },
 
@@ -38,7 +49,18 @@ export const authService = {
       const response = await api.post('/auth/login', data);
       return response.data;
     } catch (error: any) {
-      throw error.response?.data || { message: 'Login failed' };
+      // Handle different error scenarios
+      if (error.response) {
+        // Server responded with error
+        const message = error.response.data?.message || 'Login failed';
+        throw new Error(message);
+      } else if (error.request) {
+        // No response from server
+        throw new Error('Cannot connect to server. Please check if the backend is running.');
+      } else {
+        // Other errors
+        throw new Error(error.message || 'Login failed');
+      }
     }
   },
 };
