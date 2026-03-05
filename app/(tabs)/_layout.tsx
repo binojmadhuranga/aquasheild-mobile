@@ -30,6 +30,30 @@ export default function TabsLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="analytics"
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            focused ? (
+              <Ionicons name="stats-chart" size={24} color={color} />
+            ) : (
+              <Ionicons name="stats-chart-outline" size={24} color={color} />
+            )
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          tabBarIcon: ({ color, focused }) => (
+            focused ? (
+              <Ionicons name="person" size={24} color={color} />
+            ) : (
+              <Ionicons name="person-outline" size={24} color={color} />
+            )
+          ),
+        }}
+      />
     </Tabs>
   );
 }
