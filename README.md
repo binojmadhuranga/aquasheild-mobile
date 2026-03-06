@@ -51,23 +51,6 @@
 
 ---
 
-## 🖼️ Application Screenshots
-
-### Onboarding & Authentication
-<div align="center">
-  <img src="./screenshots/onboarding.png" alt="Onboarding" width="250"/>
-  <img src="./screenshots/login.png" alt="Login" width="250"/>
-  <img src="./screenshots/register.png" alt="Register" width="250"/>
-</div>
-
-### Main Features
-<div align="center">
-  <img src="./screenshots/home.png" alt="Home" width="250"/>
-  <img src="./screenshots/analytics.png" alt="Analytics" width="250"/>
-  <img src="./screenshots/profile.png" alt="Profile" width="250"/>
-</div>
-
-> **Note:** Add your application screenshots in the `screenshots/` directory for better documentation.
 
 ---
 
